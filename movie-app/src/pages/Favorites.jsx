@@ -1,11 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useFavoritesContext } from '../hooks/useFavorites.jsx'
 
-
-export default function Favorites() {
-  const { favorites, removeFavorite } = useFavoritesContext()
-
+function Favorites(props) {
+  const favorites = props.favorites
+  const removeFavorite = props.removeFavorite
+  
   if (favorites.length === 0) {
     return (
       <div className="text-center py-12">
@@ -23,8 +22,12 @@ export default function Favorites() {
       <h2 className="text-2xl font-bold mb-6">Your Favorites ({favorites.length})</h2>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {favorites.map((movie) => {
+        {favorites.map(function(movie) {
           const image = movie.image?.medium || movie.image?.original || ''
+          
+          function handleRemoveClick() {
+            removeFavorite(movie.id)
+          }
           
           return (
             <div key={movie.id} className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
@@ -45,7 +48,7 @@ export default function Favorites() {
                   </Link>
 
                   <button
-                    onClick={() => removeFavorite(movie.id)}
+                    onClick={handleRemoveClick}
                     className="px-3 py-1 rounded-md text-sm bg-red-500 text-white hover:bg-red-600"
                   >
                     Remove
@@ -59,3 +62,5 @@ export default function Favorites() {
     </div>
   )
 }
+
+export default Favorites

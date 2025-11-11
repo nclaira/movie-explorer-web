@@ -12,7 +12,8 @@ export function FavoritesProvider({ children }) {
     try {
       const raw = localStorage.getItem(STORAGE_KEY)
       if (raw) setFavorites(JSON.parse(raw))
-    } catch (e) {
+    } catch (error) {
+   console.error('Error accessing localStorage:', error);
       // Silently handle localStorage errors
     }
   }, [])
@@ -20,7 +21,9 @@ export function FavoritesProvider({ children }) {
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites))
-    } catch {}
+    } catch {
+      //
+    }
   }, [favorites])
 
   function addFavorite(movie) {
